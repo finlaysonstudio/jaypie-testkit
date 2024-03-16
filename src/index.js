@@ -3,4 +3,4 @@
 // Export
 //
 
-export default {};
+export { mockLogFactory, restoreLog, spyLog } from "./mockLog.module.js";

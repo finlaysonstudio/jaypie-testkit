@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "new": "hygen jaypie vite",
     "test": "vitest",
-    "test:spec:index": "vitest run ./src/__tests__/index.spec.js"
+    "test:spec:index": "vitest run ./src/__tests__/index.spec.js",
+    "test:spec:mockLog.module": "vitest run ./src/__tests__/mockLog.module.spec.js"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

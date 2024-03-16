@@ -1,6 +1,6 @@
 # Jaypie Testkit 🐦‍⬛🫒
 
-TODO: update the project header and optionally write a description here
+Test utilities built for Jaypie
 
 ## 📋 Usage
 

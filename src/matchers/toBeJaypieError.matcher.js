@@ -1,3 +1,6 @@
+import { matchers as jsonSchemaMatchers } from "jest-json-schema";
+import { jsonApiErrorSchema } from "../jsonApiSchema.module.js";
+
 //
 //
 // Constants
@@ -32,11 +35,8 @@ const toBeJaypieError = (received) => {
     return isErrorObjectJaypieError(received);
   }
 
-  const pass =
-    received.errors &&
-    Array.isArray(received.errors) &&
-    received.errors.length > 0;
-  if (pass) {
+  const result = jsonSchemaMatchers.toMatchSchema(received, jsonApiErrorSchema);
+  if (result.pass) {
     return {
       message: () => `expected ${received} not to be a Jaypie error`,
       pass: true,

@@ -12,6 +12,7 @@ export const jsonApiErrorSchema = {
         },
         required: ["status", "title"],
       },
+      minItems: 1,
     },
   },
   required: ["errors"],

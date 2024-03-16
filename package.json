@@ -13,8 +13,12 @@
     "new": "hygen jaypie vite",
     "test": "vitest",
     "test:spec:index": "vitest run ./src/__tests__/index.spec.js",
+    "test:spec:jsonApiSchema.module": "vitest run ./src/__tests__/jsonApiSchema.module.spec.js",
     "test:spec:matchers.module": "vitest run ./src/__tests__/matchers.module.spec.js",
     "test:spec:mockLog.module": "vitest run ./src/__tests__/mockLog.module.spec.js"
+  },
+  "dependencies": {
+    "jest-json-schema": "^6.1.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
@@ -27,8 +31,5 @@
     "prettier": "^3.2.5",
     "sort-package-json": "^2.8.0",
     "vitest": "^1.4.0"
-  },
-  "dependencies": {
-    "jest-json-schema": "^6.1.0"
   }
 }

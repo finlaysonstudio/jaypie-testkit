@@ -7,6 +7,7 @@ export function mockLogFactory() {
     error: vi.fn(),
     fatal: vi.fn(),
     info: vi.fn(),
+    lib: vi.fn(),
     tag: vi.fn(),
     trace: vi.fn(),
     untag: vi.fn(),
@@ -22,6 +23,7 @@ export function mockLogFactory() {
   mock.trace.var = mock.var;
   mock.warn.var = mock.var;
   // Have modules return correct objects
+  mock.lib.mockReturnValue(mock);
   mock.with.mockReturnValue(mock);
 
   // Create something in the shape of the module
@@ -30,6 +32,7 @@ export function mockLogFactory() {
     error: mock.error,
     fatal: mock.fatal,
     info: mock.info,
+    lib: mock.lib,
     tag: mock.tag,
     trace: mock.trace,
     untag: mock.untag,

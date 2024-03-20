@@ -86,6 +86,7 @@ expect(json).toBeJaypieError();
 
 ```
 import { 
+  LOG,
   jsonApiErrorSchema,
   jsonApiSchema,
   matchers,
@@ -93,6 +94,17 @@ import {
   restoreLog,
   spyLog,
 } from '@jaypie/testkit'
+```
+
+### `LOG`
+
+`LOG` constant provided by `@jaypie/core` for convenience
+
+```javascript
+import { log } from "@jaypie/core";
+import { LOG } from "@jaypie/testkit";
+
+const libLogger = log.lib({ level: LOG.LEVEL.WARN, lib: "myLib" });
 ```
 
 ### `jsonApiErrorSchema`
@@ -216,6 +228,7 @@ test("log", () => {
 
 | Date       | Version | Summary        |
 | ---------- | ------- | -------------- |
+|  3/20/2024 |   1.0.2 | Export `LOG`   |
 |  3/16/2024 |   1.0.0 | Artists ship   |
 |  3/15/2024 |   0.1.0 | Initial deploy |
 |  3/15/2024 |   0.0.1 | Initial commit |

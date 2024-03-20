@@ -19,10 +19,10 @@
     "test:spec:toBeJaypieError.matcher": "vitest run ./src/matchers/__tests__/toBeJaypieError.matcher.spec.js"
   },
   "dependencies": {
+    "@jaypie/core": "^1.0.0",
     "jest-json-schema": "^6.1.0"
   },
   "devDependencies": {
-    "@jaypie/core": "^0.3.7",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",

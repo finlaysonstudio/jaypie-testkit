@@ -8,6 +8,7 @@ import {
   mockLogFactory,
   restoreLog,
   spyLog,
+  sqsTestRecords,
 } from "../index.js";
 
 //
@@ -20,6 +21,7 @@ describe("Index", () => {
     expect(mockLogFactory).toBeFunction();
     expect(restoreLog).toBeFunction();
     expect(spyLog).toBeFunction();
+    expect(sqsTestRecords).toBeFunction();
   });
   it("Exports matchers", () => {
     expect(jsonApiErrorSchema).toBeObject();

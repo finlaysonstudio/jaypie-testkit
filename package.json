@@ -16,6 +16,7 @@
     "test:spec:jsonApiSchema.module": "vitest run ./src/__tests__/jsonApiSchema.module.spec.js",
     "test:spec:matchers.module": "vitest run ./src/__tests__/matchers.module.spec.js",
     "test:spec:mockLog.module": "vitest run ./src/__tests__/mockLog.module.spec.js",
+    "test:spec:sqsTestRecords.function": "vitest run ./src/__tests__/sqsTestRecords.function.spec.js",
     "test:spec:toBeJaypieError.matcher": "vitest run ./src/matchers/__tests__/toBeJaypieError.matcher.spec.js"
   },
   "dependencies": {

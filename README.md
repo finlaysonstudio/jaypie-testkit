@@ -214,6 +214,19 @@ test("log", () => {
 });
 ```
 
+### `sqsTestRecords(message, message, ...)` or `sqsTestRecords([...])`
+
+Generates an event object for testing SQS Lambda functions with as many messages as provided. Note, test will accept more than ten messages, but AWS will only send ten at a time.
+
+```javascript
+import { sqsTestRecords } from "@jaypie/testkit";
+
+const event = sqsTestRecords(
+  { MessageId: "1", Body: "Hello, World!" },
+  { MessageId: "2", Body: "Goodbye, World!" }
+);
+```
+
 ## 🌠 Wishlist
 
 * matcher toBeHttpStatus

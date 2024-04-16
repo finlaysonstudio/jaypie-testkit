@@ -1,4 +1,4 @@
-import { uuid } from "@jaypie/core";
+import { v4 as uuid } from "uuid";
 
 //
 //

@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@jaypie/core": "^1.0.11",
-    "jest-json-schema": "^6.1.0"
+    "jest-json-schema": "^6.1.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

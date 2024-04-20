@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import {
   jsonApiErrorSchema,
   jsonApiSchema,
+  LOG,
   matchers,
   mockLogFactory,
   restoreLog,
@@ -17,6 +18,9 @@ import {
 //
 
 describe("Index", () => {
+  it("Exports constants", () => {
+    expect(LOG).toBeObject();
+  });
   it("Exports functions", () => {
     expect(mockLogFactory).toBeFunction();
     expect(restoreLog).toBeFunction();

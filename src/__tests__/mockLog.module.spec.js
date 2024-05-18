@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { log } from "@jaypie/core";
+
 // Subject
 import { mockLogFactory, restoreLog, spyLog } from "../mockLog.module.js";
 
@@ -22,6 +24,13 @@ describe("Mock Log Function", () => {
     expect(mockLogFactory).toBeFunction();
     expect(restoreLog).toBeFunction();
     expect(spyLog).toBeFunction();
+  });
+  it("Works", () => {
+    spyLog(log);
+    log.debug("Hello, world!");
+    expect(log.debug).toHaveBeenCalledTimes(1);
+    expect(log.debug).toHaveBeenCalledWith("Hello, world!");
+    restoreLog(log);
   });
   describe("Features", () => {
     it("mockLogFactory produces a Jaypie logger", () => {

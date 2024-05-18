@@ -55,6 +55,7 @@ const logMethodNames = [
   "error",
   "fatal",
   "info",
+  "lib",
   "tag",
   "trace",
   "untag",

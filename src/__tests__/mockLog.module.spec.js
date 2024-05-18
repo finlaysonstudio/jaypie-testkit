@@ -100,5 +100,16 @@ describe("Mock Log Function", () => {
       expect(log.warn).toEqual(original.warn);
       expect(log.with).toEqual(original.with);
     });
+    it("Tracks calls made to lib instances", () => {
+      spyLog(log);
+      const subLog = log.lib("subLog");
+      subLog.debug("Hello, world!");
+      expect(log.lib).toHaveBeenCalledTimes(1);
+      expect(log.debug).toHaveBeenCalledTimes(1);
+      expect(log.debug).toHaveBeenCalledWith("Hello, world!");
+      expect(subLog.debug).toHaveBeenCalledTimes(1);
+      expect(subLog.debug).toHaveBeenCalledWith("Hello, world!");
+      restoreLog(log);
+    });
   });
 });

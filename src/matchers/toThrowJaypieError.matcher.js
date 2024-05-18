@@ -1,3 +1,5 @@
+import { isJaypieError } from "@jaypie/core";
+
 //
 //
 // Main
@@ -22,11 +24,7 @@ const toThrowJaypieError = async (received) => {
         "Expected function to throw a JaypieError, but it did not throw.",
     };
   } catch (error) {
-    if (
-      error &&
-      error.isProjectError === true &&
-      typeof error.json === "function"
-    ) {
+    if (isJaypieError(error)) {
       return {
         pass: true,
         message: () =>

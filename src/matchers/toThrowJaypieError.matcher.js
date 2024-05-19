@@ -1,4 +1,12 @@
-import { isJaypieError } from "@jaypie/core";
+import {
+  BadRequestError,
+  ConfigurationError,
+  ForbiddenError,
+  InternalError,
+  isJaypieError,
+  NotFoundError,
+  UnauthorizedError,
+} from "@jaypie/core";
 
 //
 //
@@ -58,7 +66,34 @@ const toThrowJaypieError = async (received, expected) => {
 
 //
 //
+// Convenience Methods
+//
+
+const toThrowBadRequestError = (received) =>
+  toThrowJaypieError(received, BadRequestError);
+const toThrowConfigurationError = (received) =>
+  toThrowJaypieError(received, ConfigurationError);
+const toThrowForbiddenError = (received) =>
+  toThrowJaypieError(received, ForbiddenError);
+const toThrowInternalError = (received) =>
+  toThrowJaypieError(received, InternalError);
+const toThrowNotFoundError = (received) =>
+  toThrowJaypieError(received, NotFoundError);
+const toThrowUnauthorizedError = (received) =>
+  toThrowJaypieError(received, UnauthorizedError);
+
+//
+//
 // Export
 //
 
 export default toThrowJaypieError;
+
+export {
+  toThrowBadRequestError,
+  toThrowConfigurationError,
+  toThrowForbiddenError,
+  toThrowInternalError,
+  toThrowNotFoundError,
+  toThrowUnauthorizedError,
+};

@@ -117,6 +117,23 @@ A [JSON Schema](https://json-schema.org/) validator for the [JSON:API](https://j
 
 ### `matchers`
 
+```javascript
+export default {
+  toBeCalledWithInitialParams,
+  toBeClass,
+  toBeJaypieError,
+  toBeValidSchema: jsonSchemaMatchers.toBeValidSchema,
+  toMatchSchema: jsonSchemaMatchers.toMatchSchema,
+  toThrowBadRequestError,
+  toThrowConfigurationError,
+  toThrowForbiddenError,
+  toThrowInternalError,
+  toThrowJaypieError,
+  toThrowNotFoundError,
+  toThrowUnauthorizedError,
+};
+```
+
 testSetup.js
 
 ```javascript

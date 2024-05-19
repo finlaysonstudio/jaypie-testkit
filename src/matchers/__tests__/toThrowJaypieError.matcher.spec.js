@@ -1,4 +1,4 @@
-import { ConfigurationError } from "@jaypie/core";
+import { ConfigurationError, NotFoundError } from "@jaypie/core";
 import { describe, expect, it } from "vitest";
 
 // Subject
@@ -74,6 +74,26 @@ describe("To Throw Jaypie Error Matcher", () => {
         expect(result.message).toBeFunction();
         expect(result.message()).toBeString();
         expect(result.pass).toBeTrue();
+      });
+    });
+    describe("Passing a type", () => {
+      it("Accepts a Jaypie error as the type", async () => {
+        const result = await toThrowJaypieError(
+          jaypieErrorFunction,
+          ConfigurationError,
+        );
+        expect(result.message).toBeFunction();
+        expect(result.message()).toBeString();
+        expect(result.pass).toBeTrue();
+      });
+      it("Rejects Jaypie errors that do not match the type", async () => {
+        const result = await toThrowJaypieError(
+          jaypieErrorFunction,
+          NotFoundError,
+        );
+        expect(result.message).toBeFunction();
+        expect(result.message()).toBeString();
+        expect(result.pass).toBeFalse();
       });
     });
   });

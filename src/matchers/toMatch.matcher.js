@@ -2,6 +2,28 @@ import { RE_UUID_PATTERN } from "../constants.js";
 
 //
 //
+// Helper
+//
+
+function forSubjectToMatchPattern(
+  subject,
+  pattern,
+  { patternName = "pattern" } = {},
+) {
+  if (pattern.test(subject)) {
+    return {
+      message: () => `expected "${subject}" not to match ${patternName}`,
+      pass: true,
+    };
+  }
+  return {
+    message: () => `expected "${subject}" to match ${patternName}`,
+    pass: false,
+  };
+}
+
+//
+//
 // Main
 //
 
@@ -10,22 +32,7 @@ import { RE_UUID_PATTERN } from "../constants.js";
  * Does _NOT_ check if the UUID is valid.
  * @param {String} subject
  */
-const toMatchUuid = (subject) => {
-  if (RE_UUID_PATTERN.test(subject)) {
-    return {
-      message: () => `expected "${subject}" not to match a UUID`,
-      pass: true,
-    };
-  }
-  return {
-    message: () => `expected "${subject}" to match a UUID`,
-    pass: false,
-  };
-};
-
-//
-//
-// Export
-//
-
-export { toMatchUuid };
+export const toMatchUuid = (subject) =>
+  forSubjectToMatchPattern(subject, RE_UUID_PATTERN, {
+    patternName: "UUID",
+  });

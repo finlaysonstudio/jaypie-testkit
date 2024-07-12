@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 // Subject
 import {
-  RE_BASE64_PATTERN,
   jsonApiErrorSchema,
   jsonApiSchema,
   matchers,

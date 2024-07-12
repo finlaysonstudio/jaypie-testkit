@@ -7,6 +7,8 @@ import {
   RE_JWT_PATTERN,
   RE_MONGO_ID_PATTERN,
   RE_SIGNED_COOKIE_PATTERN,
+  RE_UUID_4_PATTERN,
+  RE_UUID_5_PATTERN,
   RE_UUID_PATTERN,
 } from "../constants.js";
 
@@ -24,6 +26,8 @@ describe("Constants", () => {
     expect(RE_JWT_PATTERN).toBeInstanceOf(RegExp);
     expect(RE_MONGO_ID_PATTERN).toBeInstanceOf(RegExp);
     expect(RE_SIGNED_COOKIE_PATTERN).toBeInstanceOf(RegExp);
+    expect(RE_UUID_4_PATTERN).toBeInstanceOf(RegExp);
+    expect(RE_UUID_5_PATTERN).toBeInstanceOf(RegExp);
     expect(RE_UUID_PATTERN).toBeInstanceOf(RegExp);
   });
 });

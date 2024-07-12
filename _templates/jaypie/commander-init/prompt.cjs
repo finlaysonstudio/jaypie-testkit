@@ -4,9 +4,9 @@
 module.exports = [
   {
     type: "input",
-    name: "pathInput",
+    name: "path",
     initial: "src",
-    message: "Path (e.g., 'src/util'):",
+    message: "Path (e.g., 'commands' or 'src'):",
     onSubmit: (name, value, input) => {
       // Remove leading './' and trailing '/'
       value = value.replace(/^\.\//, "").replace(/\/$/, "");
@@ -15,16 +15,34 @@ module.exports = [
   },
   {
     type: "input",
-    name: "nameInput",
-    message: "File name (e.g., 'sum'):",
+    name: "commandBinImportPathInput",
+    initial: "../src/index.js",
+    message:
+      "Command import path (usually '../commands/index.js' or  '../src/index.js'):",
     onSubmit: (name, value, input) => {
-      input.state.answers.name = value;
+      input.state.answers.importPath = value;
+    },
+  },
+  {
+    type: "input",
+    name: "name",
+    initial: "index",
+    message: "File name (usually 'index'):",
+  },
+  {
+    type: "input",
+    name: "commandBinPathInput",
+    initial: "bin/command.js",
+    message: "Command file (usually 'bin/command.js'):",
+    onSubmit: (name, value, input) => {
+      input.state.answers.commandPath = value;
     },
   },
   {
     type: "input",
     name: "subtypeInput",
-    message: "Subtype (optional; e.g., 'function'):",
+    initial: "",
+    message: "Subtype (usually empty ''):",
     onSubmit: (name, value, input) => {
       input.state.answers.subtype = value;
       input.state.answers.dotSubtype = value ? `.${value}` : "";
@@ -34,7 +52,7 @@ module.exports = [
     type: "input",
     name: "subspecInput",
     message:
-      "Sub-spec test, for `npm run test:spec:SUBSPEC:sum.function` command (e.g., 'express' or 'lib:project'):",
+      "Sub-spec test, for `npm run test:spec:SUBSPEC:sum.function` command (usually empty ''):",
     onSubmit: (name, value, input) => {
       input.state.answers.subspec = value;
       input.state.answers.colonSubspec = value ? `:${value}` : "";

@@ -191,6 +191,32 @@ expect(json).not.toMatchSchema(jsonApiSchema);
 
 From `jest-json-schema`; see [README](https://github.com/americanexpress/jest-json-schema?tab=readme-ov-file#tomatchschemaschema)
 
+#### `expect(subject).toThrowJaypieError()`
+
+```javascript
+import { ConfigurationError } from "@jaypie/core";
+
+const error = new ConfigurationError();
+expect(() => {
+  throw error;
+}).toThrowJaypieError();
+```
+
+Do not forget to `await expect` when passing `async` functions:
+
+```javascript
+import { ConfigurationError } from "@jaypie/core";
+
+const error = new ConfigurationError();
+await expect(async () => {
+  throw error;
+}).toThrowJaypieError();
+
+// Breaks and causes a false-positive because `expect` did not `await`
+// expect(async () => {}).toThrowJaypieError();
+// > Error: Expected function to throw a JaypieError, but it did not throw.
+```
+
 ### `mockLogFactory()`
 
 Creates a mock of the `log` provided by `@jaypie/core`.
@@ -251,7 +277,6 @@ const event = sqsTestRecords(
 * matcher toBeJaypieData
 * matcher toBeJaypieDataObject
 * matcher toBeJaypieDataArray
-* matcher toThrowJaypieError
 * ...@knowdev/jest
 
 ## 📝 Changelog

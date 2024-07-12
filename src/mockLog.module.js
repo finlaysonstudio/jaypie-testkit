@@ -7,6 +7,7 @@ export function mockLogFactory() {
     error: vi.fn(),
     fatal: vi.fn(),
     info: vi.fn(),
+    init: vi.fn(),
     lib: vi.fn(),
     tag: vi.fn(),
     trace: vi.fn(),
@@ -23,6 +24,7 @@ export function mockLogFactory() {
   mock.trace.var = mock.var;
   mock.warn.var = mock.var;
   // Have modules return correct objects
+  mock.init.mockReturnValue(null);
   mock.lib.mockReturnValue(mock);
   mock.with.mockReturnValue(mock);
 
@@ -32,6 +34,7 @@ export function mockLogFactory() {
     error: mock.error,
     fatal: mock.fatal,
     info: mock.info,
+    init: mock.init,
     lib: mock.lib,
     tag: mock.tag,
     trace: mock.trace,
@@ -55,6 +58,7 @@ const logMethodNames = [
   "error",
   "fatal",
   "info",
+  "init",
   "lib",
   "tag",
   "trace",

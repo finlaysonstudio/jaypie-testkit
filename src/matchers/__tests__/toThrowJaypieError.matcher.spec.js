@@ -126,4 +126,14 @@ describe("To Throw Jaypie Error Matcher", () => {
       expect("Hello, World!").not.toThrowJaypieError();
     });
   });
+  describe("Specific Scenarios", () => {
+    it("Handles async that do not throw", async () => {
+      // expect(async () => verifyJwt("Bearer ")).toThrowJaypieError();
+      // Error: Expected function to throw a JaypieError, but it did not throw.
+      const asyncNoThrow = async () => {
+        // console.log("The function did not throw");
+      };
+      await expect(async () => asyncNoThrow()).not.toThrowJaypieError();
+    });
+  });
 });

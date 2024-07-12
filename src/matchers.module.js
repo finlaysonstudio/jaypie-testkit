@@ -12,6 +12,16 @@ import toThrowJaypieError, {
   toThrowUnauthorizedError,
 } from "./matchers/toThrowJaypieError.matcher.js";
 
+import {
+  toMatchBase64,
+  toMatchJwt,
+  toMatchMongoId,
+  toMatchSignedCookie,
+  toMatchUuid4,
+  toMatchUuid5,
+  toMatchUuid,
+} from "./matchers/toMatch.matcher.js";
+
 //
 //
 // Export
@@ -22,7 +32,14 @@ export default {
   toBeClass,
   toBeJaypieError,
   toBeValidSchema: jsonSchemaMatchers.toBeValidSchema,
+  toMatchBase64,
+  toMatchJwt,
+  toMatchMongoId,
   toMatchSchema: jsonSchemaMatchers.toMatchSchema,
+  toMatchSignedCookie,
+  toMatchUuid4,
+  toMatchUuid5,
+  toMatchUuid,
   toThrowBadRequestError,
   toThrowConfigurationError,
   toThrowForbiddenError,

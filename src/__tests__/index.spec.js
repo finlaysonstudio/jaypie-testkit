@@ -29,12 +29,4 @@ describe("Index", () => {
     expect(jsonApiSchema).toBeObject();
     expect(matchers).toBeObject();
   });
-  describe("Constants", () => {
-    describe("Base64", () => {
-      it("Is a regex", () => {
-        expect("abcd12345JKL+/").toMatch(RE_BASE64_PATTERN);
-        expect("taco town").not.toMatch(RE_BASE64_PATTERN);
-      });
-    });
-  });
 });

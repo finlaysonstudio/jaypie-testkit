@@ -123,7 +123,14 @@ export default {
   toBeClass,
   toBeJaypieError,
   toBeValidSchema: jsonSchemaMatchers.toBeValidSchema,
+  toMatchBase64,
+  toMatchJwt,
+  toMatchMongoId,
   toMatchSchema: jsonSchemaMatchers.toMatchSchema,
+  toMatchSignedCookie,
+  toMatchUuid4,
+  toMatchUuid5,
+  toMatchUuid,
   toThrowBadRequestError,
   toThrowConfigurationError,
   toThrowForbiddenError,
@@ -190,6 +197,19 @@ expect(json).not.toMatchSchema(jsonApiSchema);
 ```
 
 From `jest-json-schema`; see [README](https://github.com/americanexpress/jest-json-schema?tab=readme-ov-file#tomatchschemaschema)
+
+
+#### `expect(subject).toMatch*()` Regular Expression Matchers
+
+Note: these regular expressions matchers so not verify the value is value, only that it matches the pattern (it "looks like" something). For example, `expect("123e4567-e89b-12d3-a456-426614174000").toMatchUuid()` will pass because the string matches a UUID pattern, even though it is not a valid UUID. 
+
+* `toMatchBase64`
+* `toMatchJwt`
+* `toMatchMongoId`
+* `toMatchSignedCookie`
+* `toMatchUuid4`
+* `toMatchUuid5`
+* `toMatchUuid`
 
 #### `expect(subject).toThrowJaypieError()`
 

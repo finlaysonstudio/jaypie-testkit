@@ -1,6 +1,6 @@
 import { getMessages as originalGetMessages } from "@jaypie/aws";
 import { uuid as originalUuid } from "@jaypie/core";
-import { JAYPIE, log } from "@jaypie/core";
+import { BadRequestError, JAYPIE, log, UnavailableError } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
 import { spyLog } from "./mockLog.module.js";
@@ -62,6 +62,55 @@ export const sendMessage = vi.fn(() => {
 export const envBoolean = vi.fn(() => {
   return true;
 });
+
+export const jaypieHandler = vi.fn(
+  (
+    handler,
+    {
+      setup = [],
+      teardown = [],
+      unavailable = process.env.PROJECT_UNAVAILABLE,
+      validate = [],
+    } = {},
+  ) => {
+    return async (...args) => {
+      let result;
+      let thrownError;
+      if (unavailable) throw new UnavailableError();
+      for (const validator of validate) {
+        if (typeof validator === "function") {
+          const valid = await validator(...args);
+          if (valid === false) {
+            throw new BadRequestError();
+          }
+        }
+      }
+      try {
+        for (const setupFunction of setup) {
+          if (typeof setupFunction === "function") {
+            await setupFunction(...args);
+          }
+        }
+        result = handler(...args);
+      } catch (error) {
+        thrownError = error;
+      }
+      for (const teardownFunction of teardown) {
+        if (typeof teardownFunction === "function") {
+          try {
+            await teardownFunction(...args);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+      if (thrownError) {
+        throw thrownError;
+      }
+      return result;
+    };
+  },
+);
 
 export const sleep = vi.fn(() => {
   return true;

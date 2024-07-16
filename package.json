@@ -21,6 +21,7 @@
     "test": "vitest",
     "test:spec:constants": "vitest run ./src/__tests__/constants.spec.js",
     "test:spec:index": "vitest run ./src/__tests__/index.spec.js",
+    "test:spec:jaypie.mock": "vitest run ./src/__tests__/jaypie.mock.spec.js",
     "test:spec:jsonApiSchema.module": "vitest run ./src/__tests__/jsonApiSchema.module.spec.js",
     "test:spec:matchers.module": "vitest run ./src/__tests__/matchers.module.spec.js",
     "test:spec:mockLog.module": "vitest run ./src/__tests__/mockLog.module.spec.js",

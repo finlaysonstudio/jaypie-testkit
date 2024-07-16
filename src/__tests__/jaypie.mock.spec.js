@@ -10,6 +10,8 @@ import {
   sendMessage,
 } from "../jaypie.mock.js";
 
+import sqsTestRecords from "../sqsTestRecords.function.js";
+
 //
 //
 // Mock modules
@@ -40,11 +42,31 @@ describe("Jaypie Mock", () => {
         expect(sendMessage).not.toHaveBeenCalled();
       });
       it("Mocks return appropriate values", () => {
-        // expect(getMessages()).toBeObject();
         expect(getSecret()).toBeString();
         expect(sendBatchMessages()).toBeObject();
         expect(sendMessage()).toBeObject();
       });
+      it("sqsTestRecords mock returns appropriate values", () => {
+        // Arrange
+        const testRecords = sqsTestRecords(
+          { MessageId: 1, Body: "Hello, World!" },
+          { MessageId: 2, Body: "Goodbye, World!" },
+        );
+        // Assure
+        expect(getMessages).not.toHaveBeenCalled();
+        expect(testRecords).toBeObject();
+        expect(testRecords.Records).toBeArray();
+        expect(testRecords.Records[0].body).toBeString();
+        // Act
+        const messages = getMessages(testRecords);
+        // Assert
+        expect(getMessages).toHaveBeenCalled();
+        expect(messages).toBeArray();
+        expect(messages).toHaveLength(2);
+        expect(messages[0].Body).toBe("Hello, World!");
+        expect(messages[1].MessageId).toBe(2);
+      });
+
       // it("Utility functions remain unaltered", () => {});
     });
   });

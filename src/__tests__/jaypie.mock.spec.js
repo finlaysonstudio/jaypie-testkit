@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { mongoose as expectedMongoose } from "@jaypie/mongoose";
+
+import sqsTestRecords from "../sqsTestRecords.function.js";
+
 // Subject
 import {
   connect,
@@ -7,11 +11,10 @@ import {
   disconnect,
   getMessages,
   getSecret,
+  mongoose,
   sendBatchMessages,
   sendMessage,
 } from "../jaypie.mock.js";
-
-import sqsTestRecords from "../sqsTestRecords.function.js";
 
 //
 //
@@ -79,6 +82,13 @@ describe("Jaypie Mock", () => {
         expect(connect()).toBeTrue();
         expect(connectFromSecretEnv()).toBeTrue();
         expect(disconnect()).toBeTrue();
+      });
+      it("Mongoose is unaltered (for now)", () => {
+        expect(mongoose).toBe(expectedMongoose);
+      });
+      it.todo("Mocks mongoose", () => {
+        expect(vi.isMockFunction(mongoose)).toBeTrue();
+        expect(vi.isMockFunction(mongoose.connect)).toBeTrue();
       });
     });
   });

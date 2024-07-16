@@ -2,7 +2,6 @@ import { getMessages as originalGetMessages } from "@jaypie/aws";
 import { JAYPIE, log } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
-import sqsTestRecords from "./sqsTestRecords.function.js";
 import { spyLog } from "./mockLog.module.js";
 
 //

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { mongoose as expectedMongoose } from "@jaypie/mongoose";
 
+import matchers from "../matchers.module.js";
 import sqsTestRecords from "../sqsTestRecords.function.js";
 
 // Subject
@@ -9,14 +10,20 @@ import {
   connect,
   connectFromSecretEnv,
   disconnect,
+  envBoolean,
   getMessages,
   getSecret,
   mongoose,
   sendBatchMessages,
   sendMessage,
+  sleep,
   submitMetric,
   submitMetricSet,
+  uuid,
 } from "../jaypie.mock.js";
+
+// Add custom matchers
+expect.extend(matchers);
 
 //
 //
@@ -101,6 +108,21 @@ describe("Jaypie Mock", () => {
       it("Mocks return appropriate values", () => {
         expect(submitMetric()).toBeTrue();
         expect(submitMetricSet()).toBeTrue();
+      });
+    });
+    describe("Jaypie Core Utilities", () => {
+      it("Mocks expected function", () => {
+        expect(vi.isMockFunction(envBoolean)).toBeTrue();
+        expect(vi.isMockFunction(sleep)).toBeTrue();
+        expect(vi.isMockFunction(uuid)).toBeTrue();
+      });
+      it("Mocks return appropriate values", () => {
+        expect(envBoolean()).toBeTrue();
+        expect(sleep()).toBeTrue();
+        expect(uuid()).toBeString();
+        expect(uuid()).toMatchUuid();
+        uuid.mockReturnValueOnce("1234");
+        expect(uuid()).not.toMatchUuid();
       });
     });
   }); // END describe Jaypie Packages

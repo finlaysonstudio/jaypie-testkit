@@ -1,4 +1,5 @@
 import { getMessages as originalGetMessages } from "@jaypie/aws";
+import { uuid as originalUuid } from "@jaypie/core";
 import { JAYPIE, log } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
@@ -55,6 +56,18 @@ export const sendMessage = vi.fn(() => {
   // TODO: better default value
   return { value: `_MOCK_MESSAGE_[${TAG}]` };
 });
+
+// @jaypie/core Functions
+
+export const envBoolean = vi.fn(() => {
+  return true;
+});
+
+export const sleep = vi.fn(() => {
+  return true;
+});
+
+export const uuid = vi.fn(originalUuid);
 
 // @jaypie/datadog
 

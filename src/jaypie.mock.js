@@ -56,6 +56,16 @@ export const sendMessage = vi.fn(() => {
   return { value: `_MOCK_MESSAGE_[${TAG}]` };
 });
 
+// @jaypie/datadog
+
+export const submitMetric = vi.fn(() => {
+  return true;
+});
+
+export const submitMetricSet = vi.fn(() => {
+  return true;
+});
+
 // @jaypie/mongoose
 
 export const connect = vi.fn(() => {

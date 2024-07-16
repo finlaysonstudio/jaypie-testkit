@@ -14,6 +14,8 @@ import {
   mongoose,
   sendBatchMessages,
   sendMessage,
+  submitMetric,
+  submitMetricSet,
 } from "../jaypie.mock.js";
 
 //
@@ -91,5 +93,15 @@ describe("Jaypie Mock", () => {
         expect(vi.isMockFunction(mongoose.connect)).toBeTrue();
       });
     });
-  });
+    describe("Jaypie Datadog", () => {
+      it("Mocks expected function", () => {
+        expect(vi.isMockFunction(submitMetric)).toBeTrue();
+        expect(vi.isMockFunction(submitMetricSet)).toBeTrue();
+      });
+      it("Mocks return appropriate values", () => {
+        expect(submitMetric()).toBeTrue();
+        expect(submitMetricSet()).toBeTrue();
+      });
+    });
+  }); // END describe Jaypie Packages
 });

@@ -13,6 +13,7 @@ import {
   envBoolean,
   getMessages,
   getSecret,
+  HTTP,
   mongoose,
   sendBatchMessages,
   sendMessage,
@@ -40,11 +41,9 @@ afterEach(() => {
 //
 
 describe("Jaypie Mock", () => {
-  it("Exports mocks we expect", async () => {
-    expect(connect).toBeFunction();
-    expect(connect).not.toHaveBeenCalled();
-    expect(disconnect).toBeFunction();
-    expect(disconnect).not.toHaveBeenCalled();
+  it("Exports constants we expect", async () => {
+    expect(HTTP).toBeObject();
+    expect(HTTP.CODE.INTERNAL_ERROR).toBe(500);
   });
   describe("Jaypie Packages", () => {
     describe("Jaypie AWS", () => {

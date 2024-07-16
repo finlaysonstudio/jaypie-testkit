@@ -1,5 +1,5 @@
 import { getMessages as originalGetMessages } from "@jaypie/aws";
-import { uuid as originalUuid } from "@jaypie/core";
+import { force, uuid as originalUuid } from "@jaypie/core";
 import { BadRequestError, JAYPIE, log, UnavailableError } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
@@ -69,7 +69,7 @@ export const jaypieHandler = vi.fn(
     {
       setup = [],
       teardown = [],
-      unavailable = process.env.PROJECT_UNAVAILABLE,
+      unavailable = force.boolean(process.env.PROJECT_UNAVAILABLE),
       validate = [],
     } = {},
   ) => {

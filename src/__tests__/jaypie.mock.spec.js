@@ -473,7 +473,22 @@ describe("Jaypie Mock", () => {
       });
     });
     describe("Jaypie Logger", () => {
-      it.todo("Provides mock functions we expect");
+      it("Provides mock functions we expect", () => {
+        expect(log).toBeObject();
+        expect(vi.isMockFunction(log)).toBeFalse();
+        expect(vi.isMockFunction(log.debug)).toBeTrue();
+        expect(vi.isMockFunction(log.error)).toBeTrue();
+        expect(vi.isMockFunction(log.fatal)).toBeTrue();
+        expect(vi.isMockFunction(log.info)).toBeTrue();
+        expect(vi.isMockFunction(log.init)).toBeTrue();
+        expect(vi.isMockFunction(log.lib)).toBeTrue();
+        expect(vi.isMockFunction(log.tag)).toBeTrue();
+        expect(vi.isMockFunction(log.trace)).toBeTrue();
+        expect(vi.isMockFunction(log.untag)).toBeTrue();
+        expect(vi.isMockFunction(log.var)).toBeTrue();
+        expect(vi.isMockFunction(log.warn)).toBeTrue();
+        expect(vi.isMockFunction(log.with)).toBeTrue();
+      });
     });
     describe("Jaypie Mongoose", () => {
       it("Mocks expected function", () => {

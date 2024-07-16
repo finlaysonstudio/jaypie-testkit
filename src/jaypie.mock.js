@@ -63,6 +63,10 @@ export const connect = vi.fn(() => {
   return true;
 });
 
+export const connectFromSecretEnv = vi.fn(() => {
+  return true;
+});
+
 export const disconnect = vi.fn(() => {
   return true;
 });

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 // Subject
 import {
   connect,
+  connectFromSecretEnv,
   disconnect,
   getMessages,
   getSecret,
@@ -66,8 +67,19 @@ describe("Jaypie Mock", () => {
         expect(messages[0].Body).toBe("Hello, World!");
         expect(messages[1].MessageId).toBe(2);
       });
-
       // it("Utility functions remain unaltered", () => {});
+    });
+    describe("Jaypie Mongoose", () => {
+      it("Mocks expected function", () => {
+        expect(connect).not.toHaveBeenCalled();
+        expect(connectFromSecretEnv).not.toHaveBeenCalled();
+        expect(disconnect).not.toHaveBeenCalled();
+      });
+      it("Mocks return appropriate values", () => {
+        expect(connect()).toBeTrue();
+        expect(connectFromSecretEnv()).toBeTrue();
+        expect(disconnect()).toBeTrue();
+      });
     });
   });
 });

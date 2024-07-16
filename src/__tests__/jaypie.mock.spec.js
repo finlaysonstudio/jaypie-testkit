@@ -105,6 +105,12 @@ describe("Jaypie Mock", () => {
         expect(submitMetricSet()).toBeTrue();
       });
     });
+    describe("Jaypie Errors", () => {
+      it.todo("Knows if it was thrown");
+    });
+    describe("Jaypie Logger", () => {
+      it.todo("Provides mock functions we expect");
+    });
     describe("Jaypie Mongoose", () => {
       it("Mocks expected function", () => {
         expect(connect).not.toHaveBeenCalled();

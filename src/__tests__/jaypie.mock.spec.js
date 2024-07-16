@@ -81,6 +81,31 @@ describe("Jaypie Mock", () => {
       });
       // it("Utility functions remain unaltered", () => {});
     });
+    describe("Jaypie Core Utilities", () => {
+      it("Mocks expected function", () => {
+        expect(vi.isMockFunction(envBoolean)).toBeTrue();
+        expect(vi.isMockFunction(sleep)).toBeTrue();
+        expect(vi.isMockFunction(uuid)).toBeTrue();
+      });
+      it("Mocks return appropriate values", () => {
+        expect(envBoolean()).toBeTrue();
+        expect(sleep()).toBeTrue();
+        expect(uuid()).toBeString();
+        expect(uuid()).toMatchUuid();
+        uuid.mockReturnValueOnce("1234");
+        expect(uuid()).not.toMatchUuid();
+      });
+    });
+    describe("Jaypie Datadog", () => {
+      it("Mocks expected function", () => {
+        expect(vi.isMockFunction(submitMetric)).toBeTrue();
+        expect(vi.isMockFunction(submitMetricSet)).toBeTrue();
+      });
+      it("Mocks return appropriate values", () => {
+        expect(submitMetric()).toBeTrue();
+        expect(submitMetricSet()).toBeTrue();
+      });
+    });
     describe("Jaypie Mongoose", () => {
       it("Mocks expected function", () => {
         expect(connect).not.toHaveBeenCalled();
@@ -98,31 +123,6 @@ describe("Jaypie Mock", () => {
       it.todo("Mocks mongoose", () => {
         expect(vi.isMockFunction(mongoose)).toBeTrue();
         expect(vi.isMockFunction(mongoose.connect)).toBeTrue();
-      });
-    });
-    describe("Jaypie Datadog", () => {
-      it("Mocks expected function", () => {
-        expect(vi.isMockFunction(submitMetric)).toBeTrue();
-        expect(vi.isMockFunction(submitMetricSet)).toBeTrue();
-      });
-      it("Mocks return appropriate values", () => {
-        expect(submitMetric()).toBeTrue();
-        expect(submitMetricSet()).toBeTrue();
-      });
-    });
-    describe("Jaypie Core Utilities", () => {
-      it("Mocks expected function", () => {
-        expect(vi.isMockFunction(envBoolean)).toBeTrue();
-        expect(vi.isMockFunction(sleep)).toBeTrue();
-        expect(vi.isMockFunction(uuid)).toBeTrue();
-      });
-      it("Mocks return appropriate values", () => {
-        expect(envBoolean()).toBeTrue();
-        expect(sleep()).toBeTrue();
-        expect(uuid()).toBeString();
-        expect(uuid()).toMatchUuid();
-        uuid.mockReturnValueOnce("1234");
-        expect(uuid()).not.toMatchUuid();
       });
     });
   }); // END describe Jaypie Packages

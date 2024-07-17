@@ -1,6 +1,12 @@
 import { getMessages as originalGetMessages } from "@jaypie/aws";
 import { force, uuid as originalUuid } from "@jaypie/core";
-import { BadRequestError, JAYPIE, log, UnavailableError } from "@jaypie/core";
+import {
+  BadRequestError,
+  HTTP,
+  JAYPIE,
+  log,
+  UnavailableError,
+} from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
 import { spyLog } from "./mockLog.module.js";
@@ -181,14 +187,61 @@ export const expressHandler = vi.fn((handler, props = {}) => {
       props.setup.push(localsSetup);
     }
   }
-  return jaypieHandler(handler, props);
+  const jaypieFunction = jaypieHandler(handler, props);
+  return async (req, res = {}, ...extra) => {
+    // For mocking, let's make sure res json, send, and status are functions
+    const status = HTTP.CODE.OK;
+    if (res && typeof res.status === "function") {
+      res.status(200);
+    }
+    const response = jaypieFunction(req, res, ...extra);
+    if (response) {
+      if (typeof response === "object") {
+        if (typeof response.json === "function") {
+          if (res && typeof res.json === "function") {
+            res.json(response.json());
+          }
+        } else {
+          if (res && typeof res.status === "function") {
+            res.status(status).json(response);
+          }
+        }
+      } else if (typeof response === "string") {
+        try {
+          if (res && typeof res.status === "function") {
+            res.status(status).json(JSON.parse(response));
+          }
+        } catch (error) {
+          if (res && typeof res.status === "function") {
+            res.status(status).send(response);
+          }
+        }
+      } else if (response === true) {
+        if (res && typeof res.status === "function") {
+          res.status(HTTP.CODE.CREATED).send();
+        }
+      } else {
+        if (res && typeof res.status === "function") {
+          res.status(status).send(response);
+        }
+      }
+    } else {
+      // No response
+      if (res && typeof res.status === "function") {
+        res.status(HTTP.CODE.NO_CONTENT).send();
+      }
+    }
+    return response;
+  };
 });
 
 // @jaypie/lambda
 
 // For testing, this is the same as the jaypieHandler
 export const lambdaHandler = vi.fn((handler, props = {}) => {
-  return jaypieHandler(handler, props);
+  return async (event, context, ...extra) => {
+    return jaypieHandler(handler, props)(event, context, ...extra);
+  };
 });
 
 // @jaypie/mongoose

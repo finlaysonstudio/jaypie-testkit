@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { mongoose as expectedMongoose } from "@jaypie/mongoose";
 
@@ -11,13 +11,15 @@ import {
   connectFromSecretEnv,
   disconnect,
   envBoolean,
+  expressHandler,
   getMessages,
   getSecret,
   HTTP,
+  InternalError,
   jaypieHandler,
   log,
   mongoose,
-  ProjectError,
+  NotFoundError,
   sendBatchMessages,
   sendMessage,
   sleep,
@@ -470,6 +472,285 @@ describe("Jaypie Mock", () => {
       it("Mocks return appropriate values", () => {
         expect(submitMetric()).toBeTrue();
         expect(submitMetricSet()).toBeTrue();
+      });
+    });
+    describe("Jaypie Express", () => {
+      it("Mocks expected function", () => {
+        expect(vi.isMockFunction(expressHandler)).toBeTrue();
+      });
+      describe("Express Handler", () => {
+        describe("Base Cases", () => {
+          it("Works", async () => {
+            expect(expressHandler).toBeDefined();
+            expect(expressHandler).toBeFunction();
+          });
+          it("Will call a function I pass it", async () => {
+            const mockFunction = vi.fn();
+            const handler = expressHandler(mockFunction);
+            const req = {};
+            const res = {
+              on: vi.fn(),
+            };
+            const next = () => {};
+            await handler(req, res, next);
+            expect(mockFunction).toHaveBeenCalledTimes(1);
+          });
+          it("Passes req, res, and anything else to the handler", async () => {
+            // Set up four mock variables
+            const req = {};
+            const res = {
+              on: vi.fn(),
+            };
+            const three = "THREE";
+            const four = "FOUR";
+            // Set up our mock function
+            const mockFunction = vi.fn();
+            const handler = expressHandler(mockFunction);
+            // Call the handler with our mock variables
+            await handler(req, res, three, four);
+            // Expect the mock function to have been called with our mock variables
+            expect(mockFunction).toHaveBeenCalledTimes(1);
+            expect(mockFunction).toHaveBeenCalledWith(req, res, three, four);
+          });
+          it.todo("As a mock, returns what was sent", async () => {
+            //
+          });
+        });
+        describe("Error Conditions", () => {
+          it("Throws if not passed a function", () => {
+            // Arrange
+            // Act
+            // Assert
+            expect(() => expressHandler()).toThrow();
+            expect(() => expressHandler(42)).toThrow();
+            expect(() => expressHandler("string")).toThrow();
+            expect(() => expressHandler({})).toThrow();
+            expect(() => expressHandler([])).toThrow();
+            expect(() => expressHandler(null)).toThrow();
+            expect(() => expressHandler(undefined)).toThrow();
+          });
+          it("Throws if passed an invalid locals object", async () => {
+            // Arrange
+            const mockFunction = vi.fn();
+            // Act
+            expect(async () => {
+              expressHandler(mockFunction, { locals: true });
+            }).toThrowJaypieError();
+            expect(async () => {
+              expressHandler(mockFunction, { locals: 42 });
+            }).toThrowJaypieError();
+            expect(async () => {
+              expressHandler(mockFunction, { locals: "string" });
+            }).toThrowJaypieError();
+            expect(async () => {
+              expressHandler(mockFunction, { locals: [] });
+            }).toThrowJaypieError();
+            expect(async () => {
+              expressHandler(mockFunction, { locals: null });
+            }).toThrowJaypieError();
+          });
+          it("Will throw out errors", async () => {
+            const mockFunction = vi.fn(() => {
+              throw new Error("Sorpresa!");
+            });
+            const handler = expressHandler(mockFunction);
+            const req = {};
+            const mockResJson = vi.fn();
+            const res = {
+              json: mockResJson,
+              on: vi.fn(),
+              status: vi.fn(() => res),
+            };
+            const next = () => {};
+            try {
+              await handler(req, res, next);
+            } catch (error) {
+              expect(error.isProjectError).not.toBeTrue();
+            }
+            expect.assertions(1);
+          });
+          it("Will throw async errors", async () => {
+            const mockFunction = vi
+              .fn()
+              .mockRejectedValueOnce(new Error("Sorpresa!"));
+            const handler = expressHandler(mockFunction);
+            const req = {};
+            const mockResJson = vi.fn();
+            const mockResStatus = vi.fn(() => ({ json: mockResJson }));
+            const res = {
+              json: mockResJson,
+              on: vi.fn(),
+              status: mockResStatus,
+            };
+            const next = () => {};
+            try {
+              await handler(req, res, next);
+            } catch (error) {
+              expect(error.isProjectError).not.toBeTrue();
+            }
+            expect.assertions(1);
+          });
+        });
+        describe("Happy Path", () => {
+          it("Calls a function I pass it", async () => {
+            // Arrange
+            const mockFunction = vi.fn(() => 12);
+            const handler = expressHandler(mockFunction);
+            const args = [1, 2, 3];
+            // Act
+            await handler(...args);
+            // Assert
+            expect(mockFunction).toHaveBeenCalledTimes(1);
+            expect(mockFunction).toHaveBeenCalledWith(...args);
+          });
+          it("Throws the error my function throws", async () => {
+            // Arrange
+            const mockFunction = vi.fn(() => {
+              throw new Error("Sorpresa!");
+            });
+            const handler = expressHandler(mockFunction);
+            // Act
+            try {
+              await handler();
+            } catch (error) {
+              // Assert
+              expect(error.message).toBe("Sorpresa!");
+            }
+            expect.assertions(1);
+          });
+          it("Works if async/await is used", async () => {
+            // Arrange
+            const mockFunction = vi.fn(async () => 12);
+            const handler = expressHandler(mockFunction);
+            // Act
+            await handler();
+            // Assert
+            expect(mockFunction).toHaveBeenCalledTimes(1);
+          });
+          it("Returns what the function returns", async () => {
+            // Arrange
+            const mockFunction = vi.fn(() => 42);
+            const handler = expressHandler(mockFunction);
+            // Act
+            const result = await handler();
+            // Assert
+            expect(result).toBe(42);
+          });
+          it("Returns what async functions resolve", async () => {
+            // Arrange
+            const mockFunction = vi.fn(async () => 42);
+            const handler = expressHandler(mockFunction);
+            // Act
+            const result = await handler();
+            // Assert
+            expect(result).toBe(42);
+          });
+        });
+        describe("Features", () => {
+          describe("Locals", () => {
+            it("Sets values in res.locals by running functions during setup", async () => {
+              // Arrange
+              const mockFunction = vi.fn();
+              const mockLocalFunction = vi.fn();
+              const mockLocalAsyncFunction = vi.fn();
+              mockLocalFunction.mockReturnValue("function");
+              mockLocalAsyncFunction.mockResolvedValue("async/await");
+              const handler = expressHandler(mockFunction, {
+                locals: {
+                  key: "value",
+                  fn: mockLocalFunction,
+                  asyncFn: mockLocalAsyncFunction,
+                },
+              });
+              const req = {};
+              const res = {
+                on: vi.fn(),
+              };
+              const next = () => {};
+              // Act
+              await handler(req, res, next);
+              // Assert
+              expect(req.locals).toBeDefined();
+              expect(req.locals).toBeObject();
+              expect(req.locals.key).toBe("value");
+              expect(req.locals.fn).toBe("function");
+              expect(req.locals.asyncFn).toBe("async/await");
+            });
+            it("Sets locals after setup functions are called", async () => {
+              // Arrange
+              const mockFunction = vi.fn();
+              const mockLocalFunction = vi.fn();
+              const mockSetupFunction = vi.fn();
+              mockLocalFunction.mockReturnValue("function");
+              mockSetupFunction.mockReturnValue("setup");
+              const handler = expressHandler(mockFunction, {
+                locals: {
+                  key: "value",
+                  fn: mockLocalFunction,
+                },
+                setup: mockSetupFunction,
+              });
+              const req = {};
+              const res = {
+                on: vi.fn(),
+              };
+              const next = () => {};
+              // Act
+              await handler(req, res, next);
+              // Assert
+              expect(mockFunction).toHaveBeenCalledTimes(1);
+              expect(mockLocalFunction).toHaveBeenCalledTimes(1);
+              expect(mockSetupFunction).toHaveBeenCalledTimes(1);
+              expect(mockSetupFunction).toHaveBeenCalledBefore(
+                mockLocalFunction,
+              );
+            });
+          });
+          describe("Unavailable mode", () => {
+            it("Works as normal when process.env.PROJECT_UNAVAILABLE is set to false", async () => {
+              process.env.PROJECT_UNAVAILABLE = "false";
+              const mockFunction = vi.fn();
+              const handler = expressHandler(mockFunction);
+              const req = {};
+              const mockResJson = vi.fn();
+              const res = {
+                json: mockResJson,
+                on: vi.fn(),
+                status: vi.fn(() => res),
+              };
+              const next = () => {};
+              await expect(async () => handler(req, res, next)).not.toThrow();
+            });
+            it("Will respond with a 503 if process.env.PROJECT_UNAVAILABLE is set to true", async () => {
+              // Arrange
+              process.env.PROJECT_UNAVAILABLE = "true";
+              const handler = expressHandler(() => {});
+              // Act
+              try {
+                await handler();
+              } catch (error) {
+                // Assert
+                expect(error.isProjectError).toBeTrue();
+                expect(error.status).toBe(HTTP.CODE.UNAVAILABLE);
+              }
+              expect.assertions(2);
+              delete process.env.PROJECT_UNAVAILABLE;
+            });
+            it("Will respond with a 503 if unavailable=true is passed to the handler", async () => {
+              // Arrange
+              const handler = expressHandler(() => {}, { unavailable: true });
+              // Act
+              try {
+                await handler();
+              } catch (error) {
+                // Assert
+                expect(error.isProjectError).toBeTrue();
+                expect(error.status).toBe(HTTP.CODE.UNAVAILABLE);
+              }
+              expect.assertions(2);
+            });
+          });
+        });
       });
     });
     describe("Jaypie Logger", () => {

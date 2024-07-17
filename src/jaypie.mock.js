@@ -129,6 +129,61 @@ export const submitMetricSet = vi.fn(() => {
   return true;
 });
 
+// @jaypie/express
+
+export const expressHandler = vi.fn((handler, props = {}) => {
+  if (typeof handler !== "function") {
+    throw new BadRequestError("handler must be a function");
+  }
+  if (!props) {
+    props = {};
+  }
+  props.setup = force.array(props.setup); // allows a single item
+  props.teardown = force.array(props.teardown); // allows a single item
+  if (!Array.isArray(props.setup)) {
+    props.setup = [];
+  }
+  if (props.locals === null) {
+    throw new BadRequestError("locals cannot be null");
+  }
+  if (props.locals) {
+    if (typeof props.locals !== "object" || Array.isArray(props.locals)) {
+      throw new BadRequestError("locals must be an object");
+    }
+    // Locals
+    const keys = Object.keys(props.locals);
+    if (keys.length > 0) {
+      props.setup.push((req = {}) => {
+        if (typeof req !== "object") {
+          throw new BadRequestError("req must be an object");
+        }
+        // Set req.locals if it doesn't exist
+        if (!req.locals) req.locals = {};
+        if (typeof req.locals !== "object" || Array.isArray(req.locals)) {
+          throw new BadRequestError("req.locals must be an object");
+        }
+        if (!req.locals._jaypie) req.locals._jaypie = {};
+      });
+      const localsSetup = async (localsReq, localsRes) => {
+        for (let i = 0; i < keys.length; i += 1) {
+          const key = keys[i];
+          if (typeof props.locals[key] === "function") {
+            // eslint-disable-next-line no-await-in-loop
+            localsReq.locals[key] = await props.locals[key](
+              localsReq,
+              localsRes,
+            );
+          } else {
+            localsReq.locals[key] = props.locals[key];
+          }
+        }
+      };
+      props.setup.push(localsSetup);
+    }
+  }
+  return jaypieHandler(handler, props);
+});
+
 // @jaypie/mongoose
 
 export const connect = vi.fn(() => {

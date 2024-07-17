@@ -12,21 +12,33 @@ npm install --save-dev @jaypie/testkit
 
 ### Example
 
+#### Mocking Jaypie
+
+The testkit provides a complete mock for Jaypie including:
+
+* Log spying (`expect(log.warn).toHaveBeenCalled()`)
+* Default responses for runtime-only functions (`connect`, `sendMessage`, `submitMetric`)
+* No automatic error handling for handlers (which is good in production but obfuscates tests)
+* Most non-utility functions are mocked to allow simple testing
+
+```javascript
+vi.mock("jaypie", vi.importActual("@jaypie/testkit"));
+```
+
 #### Log Spying
 
 ```javascript
-import { restoreLog, spyLog } from "@jaypie/testkit";
-import { log } from "@jaypie/core";
+import { log } from "jaypie";
 
-beforeEach(() => {
-  spyLog(log);
-});
+vi.mock("jaypie", vi.importActual("@jaypie/testkit"));
+
 afterEach(() => {
-  restoreLog(log);
   vi.clearAllMocks();
 });
 
 test("log", () => {
+  expect(vi.isMockFunction(log.warn)).toBe(true);
+  expect(log.warn).not.toHaveBeenCalled();
   log.warn("Danger");
   expect(log.warn).toHaveBeenCalled();
   expect(log.error).not.toHaveBeenCalled();
@@ -256,7 +268,7 @@ Restores the `log` provided by `@jaypie/core`, commonly performed `afterEach` wi
 
 ### `spyLog(log)`
 
-Spies on the `log` provided by `@jaypie/core`, commonly performed `beforeEach` with `restoreLog` in `afterEach`.
+Spies on the `log` provided by `@jaypie/core`, commonly performed `beforeEach` with `restoreLog` in `afterEach`. Not necessary when mocking the entire Jaypie module.
 
 ```javascript
 import { restoreLog, spyLog } from "@jaypie/testkit";
@@ -303,6 +315,7 @@ const event = sqsTestRecords(
 
 | Date       | Version | Summary        |
 | ---------- | ------- | -------------- |
+|  7/16/2024 |  1.0.21 | Export Jaypie mock as default |
 |  3/20/2024 |   1.0.2 | Export `LOG`   |
 |  3/16/2024 |   1.0.0 | Artists ship   |
 |  3/15/2024 |   0.1.0 | Initial deploy |

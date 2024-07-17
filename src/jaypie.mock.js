@@ -184,6 +184,13 @@ export const expressHandler = vi.fn((handler, props = {}) => {
   return jaypieHandler(handler, props);
 });
 
+// @jaypie/lambda
+
+// For testing, this is the same as the jaypieHandler
+export const lambdaHandler = vi.fn((handler, props = {}) => {
+  return jaypieHandler(handler, props);
+});
+
 // @jaypie/mongoose
 
 export const connect = vi.fn(() => {

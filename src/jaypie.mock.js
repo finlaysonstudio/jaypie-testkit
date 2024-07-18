@@ -189,12 +189,11 @@ export const expressHandler = vi.fn((handler, props = {}) => {
   }
   const jaypieFunction = jaypieHandler(handler, props);
   return async (req = {}, res = {}, ...extra) => {
-    // For mocking, let's make sure res json, send, and status are functions
     const status = HTTP.CODE.OK;
     if (res && typeof res.status === "function") {
       res.status(200);
     }
-    const response = jaypieFunction(req, res, ...extra);
+    const response = await jaypieFunction(req, res, ...extra);
     if (response) {
       if (typeof response === "object") {
         if (typeof response.json === "function") {

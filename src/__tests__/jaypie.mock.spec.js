@@ -716,6 +716,7 @@ describe("Jaypie Mock", () => {
                 json: mockResJson,
                 on: vi.fn(),
                 status: vi.fn(() => res),
+                send: vi.fn(),
               };
               const next = () => {};
               await expect(async () => handler(req, res, next)).not.toThrow();

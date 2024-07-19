@@ -26,6 +26,7 @@
     "test:spec:constants": "vitest run ./src/__tests__/constants.spec.js",
     "test:spec:index": "vitest run ./src/__tests__/index.spec.js",
     "test:spec:jaypie.mock": "vitest run ./src/__tests__/jaypie.mock.spec.js",
+    "test:spec:expressHandler.mock": "vitest run ./src/__tests__/expressHandler-supertest.mock.spec.js",
     "test:spec:jsonApiSchema.module": "vitest run ./src/__tests__/jsonApiSchema.module.spec.js",
     "test:spec:matchers.module": "vitest run ./src/__tests__/matchers.module.spec.js",
     "test:spec:mockLog.module": "vitest run ./src/__tests__/mockLog.module.spec.js",
@@ -46,10 +47,12 @@
   "devDependencies": {
     "eslint": "^8.57.0",
     "eslint-config-jaypie": "^1.0.7",
+    "express": "^4.19.2",
     "hygen": "^6.2.11",
     "jest-extended": "^4.0.2",
     "prettier": "^3.2.5",
     "sort-package-json": "^2.8.0",
+    "supertest": "^7.0.0",
     "vitest": "^1.4.0"
   }
 }

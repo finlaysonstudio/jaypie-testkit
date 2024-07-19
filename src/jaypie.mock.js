@@ -224,53 +224,43 @@ export const expressHandler = vi.fn((handler, props = {}) => {
       }
     }
     if (responseError) {
-      if (res && typeof res.status === "function") {
+      if (supertestMode) {
         res.status(responseError.status || HTTP.CODE.INTERNAL_SERVER_ERROR);
       } else {
         throw responseError;
       }
       // response = response
     }
-    if (response) {
-      // if (res && typeof res.status === "function") {
-      //   res.status(200);
-      // }
-      if (typeof response === "object") {
-        if (typeof response.json === "function") {
-          if (res && typeof res.json === "function") {
+    if (supertestMode) {
+      if (response) {
+        // if (res && typeof res.status === "function") {
+        //   res.status(200);
+        // }
+        if (typeof response === "object") {
+          if (typeof response.json === "function") {
             res.json(response.json());
-          }
-        } else {
-          if (res && typeof res.status === "function") {
+          } else {
             res.status(status).json(response);
           }
-        }
-      } else if (typeof response === "string") {
-        try {
-          if (res && typeof res.status === "function") {
+        } else if (typeof response === "string") {
+          try {
             res.status(status).json(JSON.parse(response));
+          } catch (error) {
+            if (supertestMode) {
+              res.status(status).send(response);
+            }
           }
-        } catch (error) {
-          if (res && typeof res.status === "function") {
-            res.status(status).send(response);
-          }
-        }
-      } else if (response === true) {
-        if (res && typeof res.status === "function") {
+        } else if (response === true) {
           res.status(HTTP.CODE.CREATED).send();
-        }
-      } else {
-        if (res && typeof res.status === "function") {
+        } else {
           res.status(status).send(response);
         }
-      }
-    } else {
-      // No response
-      if (res && typeof res.status === "function") {
+      } else {
         res.status(HTTP.CODE.NO_CONTENT).send();
       }
+    } else {
+      return response;
     }
-    return response;
   };
 });
 

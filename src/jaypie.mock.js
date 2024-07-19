@@ -192,7 +192,6 @@ export const expressHandler = vi.fn((handler, props = {}) => {
   return async (req = {}, res = {}, ...extra) => {
     const status = HTTP.CODE.OK;
     let response;
-    let responseError;
     let supertestMode = false;
     if (
       res &&
@@ -223,19 +222,9 @@ export const expressHandler = vi.fn((handler, props = {}) => {
         throw error;
       }
     }
-    if (responseError) {
-      if (supertestMode) {
-        res.status(responseError.status || HTTP.CODE.INTERNAL_SERVER_ERROR);
-      } else {
-        throw responseError;
-      }
-      // response = response
-    }
     if (supertestMode) {
       if (response) {
-        // if (res && typeof res.status === "function") {
-        //   res.status(200);
-        // }
+        // res.status(200);
         if (typeof response === "object") {
           if (typeof response.json === "function") {
             res.json(response.json());

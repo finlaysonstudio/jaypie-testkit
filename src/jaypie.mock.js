@@ -193,11 +193,20 @@ export const expressHandler = vi.fn((handler, props = {}) => {
     const status = HTTP.CODE.OK;
     let response;
     let responseError;
+    let supertestMode = false;
+    if (
+      res &&
+      typeof res.socket === "object" &&
+      res.constructor.name === "ServerResponse"
+    ) {
+      // Use the response object in supertest mode
+      supertestMode = true;
+    }
     try {
       response = await jaypieFunction(req, res, ...extra);
     } catch (error) {
       // In the mock context, if status is a function we are in a "supertest"
-      if (res && typeof res.status === "function") {
+      if (supertestMode) {
         // In theory jaypieFunction has handled all errors
         const errorStatus = error.status || HTTP.CODE.INTERNAL_SERVER_ERROR;
         let errorResponse;

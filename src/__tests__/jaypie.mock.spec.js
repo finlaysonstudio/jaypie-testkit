@@ -574,6 +574,23 @@ describe("Jaypie Mock", () => {
             }
             expect.assertions(1);
           });
+          it("Will not be tricked by fake res objects", async () => {
+            const mockFunction = vi.fn(() => {
+              throw new Error("Sorpresa!");
+            });
+            const handler = expressHandler(mockFunction);
+            const req = {};
+            const res = {
+              status: () => {},
+            };
+            try {
+              await handler(req, res);
+            } catch (error) {
+              expect(error.message).toBe("Sorpresa!");
+              expect(error.isProjectError).not.toBeTrue();
+            }
+            expect.assertions(2);
+          });
         });
         describe("Happy Path", () => {
           it("Calls a function I pass it", async () => {

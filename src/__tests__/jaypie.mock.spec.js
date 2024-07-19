@@ -554,15 +554,8 @@ describe("Jaypie Mock", () => {
             });
             const handler = expressHandler(mockFunction);
             const req = {};
-            const mockResJson = vi.fn();
-            const res = {
-              json: mockResJson,
-              on: vi.fn(),
-              status: vi.fn(() => res),
-            };
-            const next = () => {};
             try {
-              await handler(req, res, next);
+              await handler(req);
             } catch (error) {
               expect(error.isProjectError).not.toBeTrue();
             }
@@ -574,16 +567,8 @@ describe("Jaypie Mock", () => {
               .mockRejectedValueOnce(new Error("Sorpresa!"));
             const handler = expressHandler(mockFunction);
             const req = {};
-            const mockResJson = vi.fn();
-            const mockResStatus = vi.fn(() => ({ json: mockResJson }));
-            const res = {
-              json: mockResJson,
-              on: vi.fn(),
-              status: mockResStatus,
-            };
-            const next = () => {};
             try {
-              await handler(req, res, next);
+              await handler(req);
             } catch (error) {
               expect(error.isProjectError).not.toBeTrue();
             }

@@ -1,5 +1,5 @@
 import express from "express";
-import { HTTP } from "jaypie";
+import { HTTP, NotFoundError } from "jaypie";
 import request from "supertest";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -51,6 +51,17 @@ describe("expressHandler", () => {
       const response = await request(route).get("/");
       expect(response.statusCode).toEqual(HTTP.CODE.OK);
       expect(response.body.message).toEqual("Hello");
+    });
+    it("Works when the router throws", async () => {
+      const route = express();
+      route.get(
+        "/",
+        expressHandler(() => {
+          throw new NotFoundError();
+        }),
+      );
+      const response = await request(route).get("/");
+      expect(response.statusCode).toEqual(HTTP.CODE.NOT_FOUND);
     });
   });
 });

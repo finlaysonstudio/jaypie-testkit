@@ -6,6 +6,7 @@ import {
   JAYPIE,
   log,
   UnavailableError,
+  UnhandledError,
 } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
@@ -190,11 +191,41 @@ export const expressHandler = vi.fn((handler, props = {}) => {
   const jaypieFunction = jaypieHandler(handler, props);
   return async (req = {}, res = {}, ...extra) => {
     const status = HTTP.CODE.OK;
-    if (res && typeof res.status === "function") {
-      res.status(200);
+    let response;
+    let responseError;
+    try {
+      response = await jaypieFunction(req, res, ...extra);
+    } catch (error) {
+      // In the mock context, if status is a function we are in a "supertest"
+      if (res && typeof res.status === "function") {
+        // In theory jaypieFunction has handled all errors
+        const errorStatus = error.status || HTTP.CODE.INTERNAL_SERVER_ERROR;
+        let errorResponse;
+        if (typeof error.json === "function") {
+          errorResponse = error.json();
+        } else {
+          // This should never happen
+          errorResponse = new UnhandledError().json();
+        }
+        res.status(errorStatus).json(errorResponse);
+        return;
+      } else {
+        // else, res.status is not a function, throw the error
+        throw error;
+      }
     }
-    const response = await jaypieFunction(req, res, ...extra);
+    if (responseError) {
+      if (res && typeof res.status === "function") {
+        res.status(responseError.status || HTTP.CODE.INTERNAL_SERVER_ERROR);
+      } else {
+        throw responseError;
+      }
+      // response = response
+    }
     if (response) {
+      // if (res && typeof res.status === "function") {
+      //   res.status(200);
+      // }
       if (typeof response === "object") {
         if (typeof response.json === "function") {
           if (res && typeof res.json === "function") {

@@ -22,7 +22,7 @@ The testkit provides a complete mock for Jaypie including:
 * Most non-utility functions are mocked to allow simple testing
 
 ```javascript
-vi.mock("jaypie", vi.importActual("@jaypie/testkit"));
+vi.mock("jaypie", async () => vi.importActual("@jaypie/testkit/mock"));
 ```
 
 #### Log Spying
@@ -30,7 +30,7 @@ vi.mock("jaypie", vi.importActual("@jaypie/testkit"));
 ```javascript
 import { log } from "jaypie";
 
-vi.mock("jaypie", vi.importActual("@jaypie/testkit"));
+vi.mock("jaypie", async () => vi.importActual("@jaypie/testkit/mock"));
 
 afterEach(() => {
   vi.clearAllMocks();

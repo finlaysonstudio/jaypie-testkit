@@ -1,7 +1,9 @@
 import {
+  BadGatewayError,
   BadRequestError,
   ConfigurationError,
   ForbiddenError,
+  GatewayTimeoutError,
   InternalError,
   isJaypieError,
   NotFoundError,
@@ -70,12 +72,16 @@ const toThrowJaypieError = async (received, expected) => {
 // Convenience Methods
 //
 
+const toThrowBadGatewayError = (received) =>
+  toThrowJaypieError(received, BadGatewayError);
 const toThrowBadRequestError = (received) =>
   toThrowJaypieError(received, BadRequestError);
 const toThrowConfigurationError = (received) =>
   toThrowJaypieError(received, ConfigurationError);
 const toThrowForbiddenError = (received) =>
   toThrowJaypieError(received, ForbiddenError);
+const toThrowGatewayTimeoutError = (received) =>
+  toThrowJaypieError(received, GatewayTimeoutError);
 const toThrowInternalError = (received) =>
   toThrowJaypieError(received, InternalError);
 const toThrowNotFoundError = (received) =>
@@ -93,9 +99,11 @@ const toThrowUnavailableError = (received) =>
 export default toThrowJaypieError;
 
 export {
+  toThrowBadGatewayError,
   toThrowBadRequestError,
   toThrowConfigurationError,
   toThrowForbiddenError,
+  toThrowGatewayTimeoutError,
   toThrowInternalError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,

@@ -5,9 +5,11 @@ import toBeCalledWithInitialParams from "./matchers/toBeCalledWithInitialParams.
 import toBeClass from "./matchers/toBeClass.matcher.js";
 import toBeJaypieError from "./matchers/toBeJaypieError.matcher.js";
 import toThrowJaypieError, {
+  toThrowBadGatewayError,
   toThrowBadRequestError,
   toThrowConfigurationError,
   toThrowForbiddenError,
+  toThrowGatewayTimeoutError,
   toThrowInternalError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,
@@ -43,9 +45,11 @@ export default {
   toMatchUuid4,
   toMatchUuid5,
   toMatchUuid,
+  toThrowBadGatewayError,
   toThrowBadRequestError,
   toThrowConfigurationError,
   toThrowForbiddenError,
+  toThrowGatewayTimeoutError,
   toThrowInternalError,
   toThrowJaypieError,
   toThrowNotFoundError,

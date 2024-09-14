@@ -707,6 +707,30 @@ describe("Jaypie Mock", () => {
               );
             });
           });
+          describe("Swap expressHandler Parameter Order", () => {
+            it("Works with the options object first", async () => {
+              // Arrange
+              const mockFunction = vi.fn();
+              const handler = expressHandler(
+                { unavailable: true },
+                mockFunction,
+              );
+              const req = {};
+              const res = {
+                on: vi.fn(),
+              };
+              const next = () => {};
+              // Act
+              try {
+                await handler(req, res, next);
+              } catch (error) {
+                // Assert
+                expect(error.isProjectError).toBeTrue();
+                expect(error.status).toBe(HTTP.CODE.UNAVAILABLE);
+              }
+              expect.assertions(2);
+            });
+          });
           describe("Unavailable mode", () => {
             it("Works as normal when process.env.PROJECT_UNAVAILABLE is set to false", async () => {
               process.env.PROJECT_UNAVAILABLE = "false";

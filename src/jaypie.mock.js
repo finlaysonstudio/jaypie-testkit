@@ -139,6 +139,12 @@ export const submitMetricSet = vi.fn(() => {
 // @jaypie/express
 
 export const expressHandler = vi.fn((handler, props = {}) => {
+  // If handler is an object and options is a function, swap them
+  if (typeof handler === "object" && typeof props === "function") {
+    const temp = handler;
+    handler = props;
+    props = temp;
+  }
   if (typeof handler !== "function") {
     throw new BadRequestError("handler must be a function");
   }

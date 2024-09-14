@@ -1,5 +1,6 @@
 import { matchers as jsonSchemaMatchers } from "jest-json-schema";
 
+import toBeCalledAboveTrace from "./matchers/toBeCalledAboveTrace.matcher.js";
 import toBeCalledWithInitialParams from "./matchers/toBeCalledWithInitialParams.matcher.js";
 import toBeClass from "./matchers/toBeClass.matcher.js";
 import toBeJaypieError from "./matchers/toBeJaypieError.matcher.js";
@@ -28,6 +29,7 @@ import {
 //
 
 export default {
+  toBeCalledAboveTrace,
   toBeCalledWithInitialParams,
   toBeClass,
   toBeJaypieError,

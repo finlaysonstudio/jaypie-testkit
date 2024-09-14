@@ -3,10 +3,10 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { log } from "../../jaypie.mock.js";
 
 // Subject
-import calledAboveTrace from "../calledAboveTrace.matcher.js";
+import toBeCalledAboveTrace from "../toBeCalledAboveTrace.matcher.js";
 
 // Extend expect with custom matchers
-expect.extend({ calledAboveTrace });
+expect.extend({ toBeCalledAboveTrace });
 
 //
 //
@@ -24,13 +24,13 @@ afterEach(() => {
 
 describe("Called Above Trace Matcher", () => {
   it("Is a function", () => {
-    expect(calledAboveTrace).toBeFunction();
+    expect(toBeCalledAboveTrace).toBeFunction();
   });
   describe("Error Conditions", () => {
     it("Throws if nothing passed", () => {
-      expect(() => calledAboveTrace()).toThrowError();
+      expect(() => toBeCalledAboveTrace()).toThrowError();
       try {
-        expect().calledAboveTrace();
+        expect().toBeCalledAboveTrace();
       } catch (error) {
         expect(error).toBeObject();
         expect(error.message).toBeString();
@@ -41,19 +41,19 @@ describe("Called Above Trace Matcher", () => {
   describe("Happy Path", () => {
     it("Matches instances of log mock", () => {
       log.fatal("This is fatal");
-      const result = calledAboveTrace(log);
+      const result = toBeCalledAboveTrace(log);
       expect(result.message).toBeFunction();
       expect(result.message()).toBeString();
       expect(result.pass).toBeTrue();
-      expect(log).calledAboveTrace();
+      expect(log).toBeCalledAboveTrace();
     });
     it("Matches instances of log mock", () => {
       log.trace("This is a trace");
-      const result = calledAboveTrace(log);
+      const result = toBeCalledAboveTrace(log);
       expect(result.message).toBeFunction();
       expect(result.message()).toBeString();
       expect(result.pass).toBeFalse();
-      expect(log).not.calledAboveTrace();
+      expect(log).not.toBeCalledAboveTrace();
     });
   });
 });

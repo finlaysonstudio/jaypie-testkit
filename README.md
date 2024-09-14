@@ -333,6 +333,7 @@ const event = sqsTestRecords(
 
 | Date       | Version | Summary        |
 | ---------- | ------- | -------------- |
+|  9/14/2024 |  1.0.28 | Matchers `toThrowBadGatewayError`, `toThrowGatewayTimeoutError`, `toThrowUnavailableError` |
 |  9/13/2024 |  1.0.27 | Matcher `toBeCalledAboveTrace` |
 |  7/16/2024 |  1.0.21 | Export Jaypie mock as default |
 |  3/20/2024 |   1.0.2 | Export `LOG`   |

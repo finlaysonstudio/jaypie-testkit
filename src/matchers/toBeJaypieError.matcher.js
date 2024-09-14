@@ -3,11 +3,6 @@ import { jsonApiErrorSchema } from "../jsonApiSchema.module.js";
 
 //
 //
-// Constants
-//
-
-//
-//
 // Helper Functions
 //
 

@@ -8,16 +8,6 @@ import toBeJaypieError from "../toBeJaypieError.matcher.js";
 
 //
 //
-// Mock constants
-//
-
-//
-//
-// Mock modules
-//
-
-//
-//
 // Mock environment
 //
 

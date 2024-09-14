@@ -11,6 +11,7 @@ import toThrowJaypieError, {
   toThrowInternalError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,
+  toThrowUnavailableError,
 } from "./matchers/toThrowJaypieError.matcher.js";
 
 import {
@@ -49,4 +50,5 @@ export default {
   toThrowJaypieError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,
+  toThrowUnavailableError,
 };

@@ -6,6 +6,7 @@ import {
   isJaypieError,
   NotFoundError,
   UnauthorizedError,
+  UnavailableError,
 } from "@jaypie/core";
 
 //
@@ -81,6 +82,8 @@ const toThrowNotFoundError = (received) =>
   toThrowJaypieError(received, NotFoundError);
 const toThrowUnauthorizedError = (received) =>
   toThrowJaypieError(received, UnauthorizedError);
+const toThrowUnavailableError = (received) =>
+  toThrowJaypieError(received, UnavailableError);
 
 //
 //
@@ -96,4 +99,5 @@ export {
   toThrowInternalError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,
+  toThrowUnavailableError,
 };

@@ -153,6 +153,7 @@ export default {
   toThrowJaypieError,
   toThrowNotFoundError,
   toThrowUnauthorizedError,
+  toThrowUnavailableError,
 };
 ```
 

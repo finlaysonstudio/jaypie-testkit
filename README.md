@@ -59,6 +59,8 @@ describe("Observability", () => {
     // Act
     await myNewFunction(); // TODO: add any "happy path" parameters
     // Assert
+    expect(log).not.toBeCalledAboveTrace();
+    // or individually:
     expect(log.debug).not.toHaveBeenCalled();
     expect(log.info).not.toHaveBeenCalled();
     expect(log.warn).not.toHaveBeenCalled();
@@ -131,6 +133,7 @@ A [JSON Schema](https://json-schema.org/) validator for the [JSON:API](https://j
 
 ```javascript
 export default {
+  toBeCalledAboveTrace,
   toBeCalledWithInitialParams,
   toBeClass,
   toBeJaypieError,
@@ -162,6 +165,18 @@ import { expect } from "vitest";
 
 expect.extend(extendedMatchers);
 expect.extend(jaypieMatchers);
+```
+
+#### `expect(subject).toBeCalledAboveTrace()`
+
+```javascript
+import { log } from "@jaypie/core";
+
+log.trace("Hello, World!");
+expect(log).not.toBeCalledAboveTrace();
+
+log.warn("Look out, World!");
+expect(log).toBeCalledAboveTrace();
 ```
 
 #### `expect(subject).toBeJaypieError()`
@@ -315,6 +330,7 @@ const event = sqsTestRecords(
 
 | Date       | Version | Summary        |
 | ---------- | ------- | -------------- |
+|  9/13/2024 |  1.0.27 | Matcher `toBeCalledAboveTrace` |
 |  7/16/2024 |  1.0.21 | Export Jaypie mock as default |
 |  3/20/2024 |   1.0.2 | Export `LOG`   |
 |  3/16/2024 |   1.0.0 | Artists ship   |

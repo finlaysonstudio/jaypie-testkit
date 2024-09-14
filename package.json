@@ -23,6 +23,7 @@
     "new:model": "hygen jaypie model",
     "new:test": "hygen jaypie vitest",
     "test": "vitest",
+    "test:spec:calledAboveTrace.matcher": "vitest run ./src/matchers/__tests__/calledAboveTrace.matcher.spec.js",
     "test:spec:constants": "vitest run ./src/__tests__/constants.spec.js",
     "test:spec:expressHandler.mock": "vitest run ./src/__tests__/expressHandler-supertest.mock.spec.js",
     "test:spec:index": "vitest run ./src/__tests__/index.spec.js",

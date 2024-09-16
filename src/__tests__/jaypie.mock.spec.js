@@ -7,6 +7,7 @@ import sqsTestRecords from "../sqsTestRecords.function.js";
 
 // Subject
 import {
+  ConfigurationError,
   connect,
   connectFromSecretEnv,
   disconnect,
@@ -471,6 +472,32 @@ describe("Jaypie Mock", () => {
       it("Mocks return appropriate values", () => {
         expect(submitMetric()).toBeTrue();
         expect(submitMetricSet()).toBeTrue();
+      });
+    });
+    describe("Jaypie Errors", () => {
+      it("Mocks errors", () => {
+        expect(ConfigurationError).toBeDefined();
+        expect(ConfigurationError).toBeFunction();
+        expect(ConfigurationError.mock).toBeDefined();
+        try {
+          throw new ConfigurationError("Sorpresa!");
+        } catch (error) {
+          expect(error.isProjectError).toBeTrue();
+          expect(error.status).toBeNumber();
+          expect(error.message).toBeString();
+          expect(error.detail).toBeString();
+          expect(error.detail).toBe("Sorpresa!");
+        }
+        try {
+          throw ConfigurationError("Sorpresa!");
+        } catch (error) {
+          expect(error.isProjectError).toBeTrue();
+          expect(error.status).toBeNumber();
+          expect(error.message).toBeString();
+          expect(error.detail).toBeString();
+          expect(error.detail).toBe("Sorpresa!");
+        }
+        expect.assertions(13);
       });
     });
     describe("Jaypie Express", () => {

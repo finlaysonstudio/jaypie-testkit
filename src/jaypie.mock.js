@@ -1,12 +1,31 @@
 import { getMessages as originalGetMessages } from "@jaypie/aws";
 import { force, uuid as originalUuid } from "@jaypie/core";
 import {
-  BadRequestError,
+  // Core utilities
   HTTP,
   JAYPIE,
   log,
-  UnavailableError,
-  UnhandledError,
+  // Errors
+  BadGatewayError as BadGatewayErrorOriginal,
+  BadRequestError as BadRequestErrorOriginal,
+  ConfigurationError as ConfigurationErrorOriginal,
+  ForbiddenError as ForbiddenErrorOriginal,
+  GatewayTimeoutError as GatewayTimeoutErrorOriginal,
+  GoneError as GoneErrorOriginal,
+  IllogicalError as IllogicalErrorOriginal,
+  InternalError as InternalErrorOriginal,
+  MethodNotAllowedError as MethodNotAllowedErrorOriginal,
+  MultiError as MultiErrorOriginal,
+  NotFoundError as NotFoundErrorOriginal,
+  NotImplementedError as NotImplementedErrorOriginal,
+  ProjectError as ProjectErrorOriginal,
+  ProjectMultiError as ProjectMultiErrorOriginal,
+  RejectedError as RejectedErrorOriginal,
+  TeapotError as TeapotErrorOriginal,
+  UnauthorizedError as UnauthorizedErrorOriginal,
+  UnavailableError as UnavailableErrorOriginal,
+  UnhandledError as UnhandledErrorOriginal,
+  UnreachableCodeError as UnreachableCodeErrorOriginal,
 } from "@jaypie/core";
 import { beforeAll, vi } from "vitest";
 
@@ -62,6 +81,69 @@ export const sendBatchMessages = vi.fn(() => {
 export const sendMessage = vi.fn(() => {
   // TODO: better default value
   return { value: `_MOCK_MESSAGE_[${TAG}]` };
+});
+
+// @jaypie/core Errors
+
+export const BadGatewayError = vi.fn((...params) => {
+  return BadGatewayErrorOriginal(...params);
+});
+export const BadRequestError = vi.fn((...params) => {
+  return BadRequestErrorOriginal(...params);
+});
+export const ConfigurationError = vi.fn((...params) => {
+  return ConfigurationErrorOriginal(...params);
+});
+export const ForbiddenError = vi.fn((...params) => {
+  return ForbiddenErrorOriginal(...params);
+});
+export const GatewayTimeoutError = vi.fn((...params) => {
+  return GatewayTimeoutErrorOriginal(...params);
+});
+export const GoneError = vi.fn((...params) => {
+  return GoneErrorOriginal(...params);
+});
+export const IllogicalError = vi.fn((...params) => {
+  return IllogicalErrorOriginal(...params);
+});
+export const InternalError = vi.fn((...params) => {
+  return InternalErrorOriginal(...params);
+});
+export const MethodNotAllowedError = vi.fn((...params) => {
+  return MethodNotAllowedErrorOriginal(...params);
+});
+export const MultiError = vi.fn((...params) => {
+  return MultiErrorOriginal(...params);
+});
+export const NotFoundError = vi.fn((...params) => {
+  return NotFoundErrorOriginal(...params);
+});
+export const NotImplementedError = vi.fn((...params) => {
+  return NotImplementedErrorOriginal(...params);
+});
+export const ProjectError = vi.fn((...params) => {
+  return ProjectErrorOriginal(...params);
+});
+export const ProjectMultiError = vi.fn((...params) => {
+  return ProjectMultiErrorOriginal(...params);
+});
+export const RejectedError = vi.fn((...params) => {
+  return RejectedErrorOriginal(...params);
+});
+export const TeapotError = vi.fn((...params) => {
+  return TeapotErrorOriginal(...params);
+});
+export const UnauthorizedError = vi.fn((...params) => {
+  return UnauthorizedErrorOriginal(...params);
+});
+export const UnavailableError = vi.fn((...params) => {
+  return UnavailableErrorOriginal(...params);
+});
+export const UnhandledError = vi.fn((...params) => {
+  return UnhandledErrorOriginal(...params);
+});
+export const UnreachableCodeError = vi.fn((...params) => {
+  return UnreachableCodeErrorOriginal(...params);
 });
 
 // @jaypie/core Functions

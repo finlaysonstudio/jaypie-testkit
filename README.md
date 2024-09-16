@@ -25,6 +25,23 @@ The testkit provides a complete mock for Jaypie including:
 vi.mock("jaypie", async () => vi.importActual("@jaypie/testkit/mock"));
 ```
 
+#### Error Spying
+  
+```javascript
+import { ConfigurationError } from "@jaypie/core";
+
+vi.mock("jaypie", async () => vi.importActual("@jaypie/testkit/mock"));
+
+test("ConfigurationError", () => {
+  try {
+    throw new ConfigurationError("Sorpresa!");
+  } catch (error) {
+    expect(error).toBeJaypieError();
+    expect(ConfigurationError).toHaveBeenCalled();
+  }
+});
+```
+
 #### Log Spying
 
 ```javascript
@@ -333,6 +350,7 @@ const event = sqsTestRecords(
 
 | Date       | Version | Summary        |
 | ---------- | ------- | -------------- |
+|  9/15/2024 |  1.0.29 | All errors exported as mocks |
 |  9/14/2024 |  1.0.28 | Matchers `toThrowBadGatewayError`, `toThrowGatewayTimeoutError`, `toThrowUnavailableError` |
 |  9/13/2024 |  1.0.27 | Matcher `toBeCalledAboveTrace` |
 |  7/16/2024 |  1.0.21 | Export Jaypie mock as default |

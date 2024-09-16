@@ -263,6 +263,12 @@ export const expressHandler = vi.fn((handler, props = {}) => {
 
 // For testing, this is the same as the jaypieHandler
 export const lambdaHandler = vi.fn((handler, props = {}) => {
+  // If handler is an object and options is a function, swap them
+  if (typeof handler === "object" && typeof props === "function") {
+    const temp = handler;
+    handler = props;
+    props = temp;
+  }
   return async (event, context, ...extra) => {
     return jaypieHandler(handler, props)(event, context, ...extra);
   };

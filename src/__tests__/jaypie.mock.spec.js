@@ -860,6 +860,29 @@ describe("Jaypie Mock", () => {
             expect.assertions(1);
           });
         });
+        describe("Features", () => {
+          describe("Swap lambdaHandler Parameter Order", () => {
+            it("Works with the options object first", async () => {
+              // Arrange
+              const mockFunction = vi.fn();
+              const handler = lambdaHandler(
+                { unavailable: true },
+                mockFunction,
+              );
+              const event = {};
+              const context = {};
+              // Act
+              try {
+                await handler(event, context);
+              } catch (error) {
+                // Assert
+                expect(error.isProjectError).toBeTrue();
+                expect(error.status).toBe(HTTP.CODE.UNAVAILABLE);
+              }
+              expect.assertions(2);
+            });
+          });
+        });
       });
     });
     describe("Jaypie Logger", () => {
